@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>⚡ PowerPay | Smart Electricity Billing System</title>
+  <!-- Google Fonts + Font Awesome for Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(145deg, #e9f0fc 0%, #d9e4f5 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 1.5rem;
+    }
+
+    /* Main Glassmorphic Card */
+    .app-container {
+      max-width: 1400px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(14px);
+      border-radius: 3rem;
+      box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.5);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    /* Hero header with photo + title */
+    .hero-section {
+      background: linear-gradient(135deg, #0b2b44, #0a1c2f);
+      padding: 1.5rem 2rem 1.8rem 2rem;
+      color: white;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      border-bottom: 3px solid #ffc107;
+    }
+
+    .title-area h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .title-area h1 i {
+      color: #ffc107;
+      font-size: 2rem;
+    }
+
+    .title-area p {
+      font-size: 0.9rem;
+      opacity: 0.85;
+      margin-top: 6px;
+      font-weight: 400;
+    }
+
+    .profile-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(4px);
+      padding: 0.5rem 1.2rem 0.5rem 1rem;
+      border-radius: 60px;
+      transition: 0.2s;
+    }
+
+    .profile-pic {
+      width: 58px;
+      height: 58px;
+      background: #fff3e0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 2px solid #ffc107;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .profile-pic img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-info {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .profile-info small {
+      font-size: 0.7rem;
+      opacity: 0.8;
+      display: block;
+    }
+
+    /* Dashboard grid: left form + right bill summary */
+    .dashboard {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      padding: 2rem 2rem 2rem 2rem;
+    }
+
+    /* Left form card */
+    .billing-panel {
+      flex: 1.2;
+      min-width: 280px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 2rem;
+      padding: 1.8rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      transition: 0.2s;
+    }
+
+    .payment-history {
+      flex: 1;
+      min-width: 280px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 2rem;
+      padding: 1.8rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      border-left: 5px solid #ff9800;
+      padding-left: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .input-group {
+      margin-bottom: 1.3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .input-group label {
+      font-weight: 600;
+      color: #1e3a5f;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .input-group input, .input-group select {
+      padding: 12px 16px;
+      border-radius: 28px;
+      border: 1px solid #cbd5e1;
+      background: white;
+      font-size: 0.95rem;
+      transition: 0.2s;
+      outline: none;
+    }
+
+    .input-group input:focus, .input-group select:focus {
+      border-color: #ff9800;
+      box-shadow: 0 0 0 3px rgba(255,152,0,0.2);
+    }
+
+    .rate-info {
+      background: #fef3e2;
+      padding: 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin: 1rem 0;
+      display: flex;
+      justify-content: space-between;
+      font-weight: 500;
+    }
+
+    .btn-calc, .btn-pay {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-calc {
+      background: #1e3a5f;
+      color: white;
+      margin-bottom: 1rem;
+    }
+
+    .btn-calc:hover {
+      background: #0f2a44;
+      transform: scale(0.98);
+    }
+
+    .btn-pay {
+      background: #ff9800;
+      color: #1e2a2e;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+
+    .btn-pay:hover {
+      background: #f57c00;
+      transform: translateY(-2px);
+    }
+
+    .bill-card {
+      background: #f8fafc;
+      border-radius: 1.5rem;
+      padding: 1.2rem;
+      margin: 1rem 0;
+      border: 1px solid #e2e8f0;
+    }
+
+    .bill-detail {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+
+    .total-amount {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #e67e22;
+      margin-top: 0.5rem;
+      text-align: right;
+    }
+
+    .history-list {
+      max-height: 340px;
+      overflow-y: auto;
+    }
+
+    .history-item {
+      background: white;
+      border-radius: 1rem;
+      padding: 0.8rem;
+      margin-bottom: 0.7rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-left: 4px solid #ff9800;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .history-info small {
+      display: block;
+      color: #4b5563;
+      font-size: 0.7rem;
+    }
+
+    .history-amount {
+      font-weight: 800;
+      color: #2c3e66;
+    }
+
+    .badge-paid {
+      background: #10b98120;
+      color: #0b5e42;
+      border-radius: 30px;
+      padding: 4px 10px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    .empty-history {
+      text-align: center;
+      padding: 2rem;
+      color: #6c757d;
+    }
+
+    footer {
+      background: #f1f5f9;
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #334155;
+      border-top: 1px solid rgba(0,0,0,0.05);
+    }
+
+    @media (max-width: 750px) {
+      .hero-section {
+        flex-direction: column;
+        text-align: center;
+      }
+      .profile-card {
+        margin-top: 0.5rem;
+      }
+      .dashboard {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+  <!-- Hero Section with Photo (Attached as requested - opens with website) -->
+  <div class="hero-section">
+    <div class="title-area">
+      <h1><i class="fas fa-bolt"></i> PowerPay<span style="font-weight: 400;"> | Smart Billing</span></h1>
+      <p>Real-time electricity tariff · Instant payment · Track history</p>
+    </div>
+    <div class="profile-card">
+      <div class="profile-pic">
+        <!-- YOUR PHOTO ATTACHMENT: Replace 'myphoto.jpg' with actual image path/base64 if needed. 
+        For demonstration, I'm using a placeholder avatar but you can replace src with your photo. 
+        I've added an inline note: to attach your photo, simply replace the src with your image file. -->
+        <img id="userPhotoImg" src="https://ui-avatars.com/api/?background=ffc107&color=1e3a5f&rounded=true&size=60&name=YOUR+PHOTO" alt="User Photo">
+        <!-- IMPORTANT: TO ATTACH YOUR PHOTO, REPLACE THE SRC ABOVE WITH YOUR IMAGE PATH (e.g., 'myphoto.jpg' or dataURL) 
+             The image displays when website opens. Keep same dimensions or adjust. -->
+      </div>
+      <div class="profile-info">
+        <span><i class="fas fa-user-circle"></i> DSA Student</span>
+        <small>Electricity Board Member</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard">
+    <!-- Left Panel: Bill calculator & payment -->
+    <div class="billing-panel">
+      <div class="section-title">
+        <i class="fas fa-file-invoice-dollar"></i> 
+        <span>Calculate Bill</span>
+      </div>
+
+      <div class="input-group">
+        <label><i class="fas fa-plug"></i> Consumer ID / Meter No.</label>
+        <input type="text" id="consumerId" placeholder="e.g., ELEC-1001" value="USER-001">
+      </div>
+
+      <div class="input-group">
+        <label><i class="fas fa-charging-station"></i> Units Consumed (kWh)</label>
+        <input type="number" id="units" placeholder="Enter this month's usage" value="320" step="any">
+      </div>
+
+      <div class="input-group">
+        <label><i class="fas fa-tachometer-alt"></i> Tariff Category</label>
+        <select id="tariffType">
+          <option value="domestic">🏠 Domestic (₹3.5 - ₹7.2 / unit)</option>
+          <option value="commercial">🏭 Commercial (₹7.0 - ₹12.5 / unit)</option>
+          <option value="industrial">⚙️ Industrial (₹6.2 - ₹11.0 / unit)</option>
+        </select>
+      </div>
+
+      <div class="rate-info" id="rateDisplay">
+        <span>📊 Current slab rate:</span>
+        <span id="slabText">₹0.00 / unit</span>
+      </div>
+
+      <!-- Calculated Bill preview -->
+      <div class="bill-card" id="billPreviewCard">
+        <div class="bill-detail"><span>Consumer ID:</span><span id="previewConsumer">—</span></div>
+        <div class="bill-detail"><span>Units (kWh):</span><span id="previewUnits">0</span></div>
+        <div class="bill-detail"><span>Tariff:</span><span id="previewTariff">—</span></div>
+        <div class="bill-detail"><span>Energy Charges:</span><span id="previewEnergy">₹0.00</span></div>
+        <div class="bill-detail"><span>Fixed charges + taxes:</span><span id="previewTax">₹0.00</span></div>
+        <div class="total-amount" id="previewTotal">₹0.00</div>
+      </div>
+
+      <button class="btn-calc" id="calculateBtn"><i class="fas fa-calculator"></i> Calculate Bill</button>
+      <button class="btn-pay" id="payNowBtn"><i class="fas fa-rupee-sign"></i> Confirm & Pay Now</button>
+      <p style="font-size: 0.7rem; margin-top: 12px; text-align: center; color:#475569;"><i class="fas fa-shield-alt"></i> Secure payment simulation (DSA project)</p>
+    </div>
+
+    <!-- Right Panel: Payment History & Dashboard -->
+    <div class="payment-history">
+      <div class="section-title">
+        <i class="fas fa-history"></i>
+        <span>Payment Records</span>
+      </div>
+      <div id="historyContainer" class="history-list">
+        <!-- Dynamic history will appear here -->
+        <div class="empty-history"><i class="fas fa-receipt"></i> No transactions yet. Pay your first bill!</div>
+      </div>
+      <div style="margin-top: 1rem; background: #eef2ff; border-radius: 1rem; padding: 0.8rem; font-size: 0.75rem;">
+        <i class="fas fa-info-circle"></i> <strong>Slab Rates (Domestic example):</strong> 0-200u: ₹3.5, 201-400u: ₹5.2, 401+ : ₹7.2 + fixed ₹75 + 5% GST
+      </div>
+    </div>
+  </div>
+  <footer>
+    <i class="fas fa-solar-panel"></i>  DSA Project: Electricity Billing & Payment System  |  ⚡ Real-time calculations & history using JavaScript
+  </footer>
+</div>
+
+<script>
+  // -------------------------------
+  // DOM elements
+  // -------------------------------
+  const consumerInput = document.getElementById('consumerId');
+  const unitsInput = document.getElementById('units');
+  const tariffSelect = document.getElementById('tariffType');
+  const rateDisplaySpan = document.getElementById('slabText');
+  const previewConsumerSpan = document.getElementById('previewConsumer');
+  const previewUnitsSpan = document.getElementById('previewUnits');
+  const previewTariffSpan = document.getElementById('previewTariff');
+  const previewEnergySpan = document.getElementById('previewEnergy');
+  const previewTaxSpan = document.getElementById('previewTax');
+  const previewTotalSpan = document.getElementById('previewTotal');
+  const calculateBtn = document.getElementById('calculateBtn');
+  const payBtn = document.getElementById('payNowBtn');
+  const historyContainer = document.getElementById('historyContainer');
+
+  // Payment history array (store objects)
+  let paymentHistory = [];
+
+  // Helper: load from localStorage if any (persistence)
+  function loadHistoryFromStorage() {
+    const stored = localStorage.getItem('electricity_payment_history');
+    if (stored) {
+      try {
+        paymentHistory = JSON.parse(stored);
+      } catch(e) { paymentHistory = []; }
+    } else {
+      // optional sample demo data
+      paymentHistory = [
+        { consumerId: "ELEC-1001", units: 215, tariffType: "domestic", totalAmount: 145.32, date: new Date(2025, 2, 15).toLocaleString() },
+        { consumerId: "USER-001", units: 480, tariffType: "commercial", totalAmount: 372.80, date: new Date(2025, 1, 10).toLocaleString() }
+      ];
+    }
+    renderHistory();
+  }
+
+  function saveHistoryToStorage() {
+    localStorage.setItem('electricity_payment_history', JSON.stringify(paymentHistory));
+  }
+
+  // ---------- Tariff & Billing Logic ----------
+  function calculateRateAndBill(units, tariffType) {
+    // rates per unit based on slabs & categories
+    let energyCharges = 0;
+    let slabText = "";
+    let fixedCharge = 0;
+    let taxPercentage = 0.05; // 5% GST
+    
+    if (tariffType === 'domestic') {
+      if (units <= 200) {
+        energyCharges = units * 3.5;
+        slabText = "₹3.5 / unit (0-200kWh)";
+      } else if (units <= 400) {
+        energyCharges = units * 5.2;
+        slabText = "₹5.2 / unit (201-400kWh)";
+      } else {
+        energyCharges = units * 7.2;
+        slabText = "₹7.2 / unit (>400kWh)";
+      }
+      fixedCharge = 75;
+    } 
+    else if (tariffType === 'commercial') {
+      if (units <= 200) {
+        energyCharges = units * 7.0;
+        slabText = "₹7.0 / unit (commercial base)";
+      } else if (units <= 500) {
+        energyCharges = units * 9.2;
+        slabText = "₹9.2 / unit (commercial mid)";
+      } else {
+        energyCharges = units * 12.5;
+        slabText = "₹12.5 / unit (commercial high)";
+      }
+      fixedCharge = 150;
+      taxPercentage = 0.06; // 6% GST for commercial
+    } 
+    else { // industrial
+      if (units <= 500) {
+        energyCharges = units * 6.2;
+        slabText = "₹6.2 / unit (industrial basic)";
+      } else {
+        energyCharges = units * 11.0;
+        slabText = "₹11.0 / unit (industrial bulk)";
+      }
+      fixedCharge = 220;
+      taxPercentage = 0.055; // 5.5%
+    }
+    
+    const subtotal = energyCharges + fixedCharge;
+    const taxes = subtotal * taxPercentage;
+    const totalAmount = subtotal + taxes;
+    
+    return {
+      energyCharges: parseFloat(energyCharges.toFixed(2)),
+      fixedCharge: parseFloat(fixedCharge.toFixed(2)),
+      taxes: parseFloat(taxes.toFixed(2)),
+      totalAmount: parseFloat(totalAmount.toFixed(2)),
+      slabText: slabText,
+      tariffLabel: tariffType === 'domestic' ? 'Domestic' : (tariffType === 'commercial' ? 'Commercial' : 'Industrial')
+    };
+  }
+
+  // current bill state (latest calculation)
+  let currentBill = {
+    consumerId: "",
+    units: 0,
+    tariffType: "",
+    energy: 0,
+    fixed: 0,
+    tax: 0,
+    total: 0,
+    slabMsg: ""
+  };
+
+  function updateBillPreview() {
+    const consumer = consumerInput.value.trim();
+    let units = parseFloat(unitsInput.value);
+    if (isNaN(units) || units < 0) units = 0;
+    const tariff = tariffSelect.value;
+    
+    if (units === 0) {
+      previewConsumerSpan.innerText = consumer || "—";
+      previewUnitsSpan.innerText = "0";
+      previewTariffSpan.innerText = tariff === 'domestic' ? 'Domestic' : (tariff === 'commercial' ? 'Commercial' : 'Industrial');
+      previewEnergySpan.innerText = "₹0.00";
+      previewTaxSpan.innerText = "₹0.00";
+      previewTotalSpan.innerText = "₹0.00";
+      rateDisplaySpan.innerText = "₹0.00 / unit";
+      currentBill.total = 0;
+      return;
+    }
+    
+    const bill = calculateRateAndBill(units, tariff);
+    previewConsumerSpan.innerText = consumer || "—";
+    previewUnitsSpan.innerText = units;
+    previewTariffSpan.innerText = bill.tariffLabel;
+    previewEnergySpan.innerText = `₹${bill.energyCharges}`;
+    const totalFixedTax = (bill.fixedCharge + bill.taxes);
+    previewTaxSpan.innerText = `₹${totalFixedTax.toFixed(2)} (fixed+tax)`;
+    previewTotalSpan.innerText = `₹${bill.totalAmount}`;
+    rateDisplaySpan.innerText = bill.slabText;
+    
+    // store current bill snapshot
+    currentBill = {
+      consumerId: consumer || "Guest",
+      units: units,
+      tariffType: tariff,
+      energy: bill.energyCharges,
+      fixed: bill.fixedCharge,
+      tax: bill.taxes,
+      total: bill.totalAmount,
+      slabMsg: bill.slabText,
+      tariffLabel: bill.tariffLabel
+    };
+  }
+  
+  // explicit calculate button
+  function calculateHandler() {
+    updateBillPreview();
+    // subtle animation
+    const btn = calculateBtn;
+    btn.style.transform = "scale(0.97)";
+    setTimeout(() => btn.style.transform = "", 150);
+    // if units valid display success toast (optional)
+    let units = parseFloat(unitsInput.value);
+    if (!isNaN(units) && units > 0) {
+      // just feedback
+    } else {
+      alert("⚠️ Please enter valid units (positive number).");
+    }
+  }
+  
+  // payment logic: adds to history
+  function processPayment() {
+    // make sure we have fresh calculation
+    updateBillPreview();
+    if (currentBill.units === 0 || currentBill.total === 0) {
+      alert("❌ Cannot process payment. Please enter valid units (>0) and calculate or verify bill amount.");
+      return;
+    }
+    if (!currentBill.consumerId || currentBill.consumerId === "") {
+      alert("⚠️ Please enter Consumer ID before payment.");
+      return;
+    }
+    
+    // confirm payment popup
+    const confirmPay = confirm(`🔌 CONFIRM PAYMENT \n\nConsumer: ${currentBill.consumerId}\nUnits: ${currentBill.units} kWh\nTotal Amount: ₹${currentBill.total}\n\nProceed with payment?`);
+    if (!confirmPay) return;
+    
+    // create history entry
+    const paymentRecord = {
+      consumerId: currentBill.consumerId,
+      units: currentBill.units,
+      tariffType: currentBill.tariffType,
+      totalAmount: currentBill.total,
+      date: new Date().toLocaleString(),
+      energyCharges: currentBill.energy,
+      taxFixed: (currentBill.fixed + currentBill.tax)
+    };
+    
+    paymentHistory.unshift(paymentRecord); // newest first
+    saveHistoryToStorage();
+    renderHistory();
+    
+    // reset units to zero after payment? Option: not mandatory but good UX: set units to 0 and clear
+    unitsInput.value = 0;
+    updateBillPreview();
+    // success feedback
+    alert(`✅ Payment of ₹${currentBill.total} successful!\nReceipt sent to ${currentBill.consumerId}`);
+    // optional: reset consumer id? not resetting, but keep.
+  }
+  
+  // Render payment history with nice UI
+  function renderHistory() {
+    if (!historyContainer) return;
+    if (paymentHistory.length === 0) {
+      historyContainer.innerHTML = `<div class="empty-history"><i class="fas fa-credit-card"></i> No payments yet. Pay your first bill!</div>`;
+      return;
+    }
+    
+    let html = '';
+    for (let i = 0; i < paymentHistory.length; i++) {
+      const rec = paymentHistory[i];
+      const tariffIcon = rec.tariffType === 'domestic' ? '🏠' : (rec.tariffType === 'commercial' ? '🏭' : '⚙️');
+      html += `
+        <div class="history-item">
+          <div class="history-info">
+            <strong><i class="fas fa-user"></i> ${escapeHtml(rec.consumerId)}</strong> <span style="font-size:0.7rem;">${tariffIcon} ${rec.tariffType}</span><br>
+            <small><i class="fas fa-bolt"></i> ${rec.units} kWh  |  ${rec.date}</small>
+          </div>
+          <div style="text-align:right;">
+            <div class="history-amount">₹${rec.totalAmount.toFixed(2)}</div>
+            <div class="badge-paid"><i class="fas fa-check-circle"></i> PAID</div>
+          </div>
+        </div>
+      `;
+    }
+    historyContainer.innerHTML = html;
+  }
+  
+  // simple escape for XSS
+  function escapeHtml(str) {
+    if(!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+      if(m === '&') return '&amp;';
+      if(m === '<') return '&lt;';
+      if(m === '>') return '&gt;';
+      return m;
+    });
+  }
+  
+  // auto recalc when units or tariff changes
+  function bindEvents() {
+    unitsInput.addEventListener('input', () => updateBillPreview());
+    tariffSelect.addEventListener('change', () => updateBillPreview());
+    consumerInput.addEventListener('input', () => updateBillPreview());
+    calculateBtn.addEventListener('click', calculateHandler);
+    payBtn.addEventListener('click', processPayment);
+  }
+  
+  // ---------- SET YOUR PHOTO ----------
+  // To attach your photo, simply replace the image source in the HTML img tag.
+  // Additionally, I am adding a dynamic way: If you have a local file, you can replace.
+  // For demonstration, I keep avatar, but instruction: change img src.
+  // We also ensure that on window load, we can try to let user set photo? but as requirement, your photo should appear on open.
+  // I will also add a optional console note.
+  // To make it clear: you can replace src in .profile-pic img with your image path (like "my_photo.jpg").
+  // In this code, I will also add a small script to show a note, but you manually replace the img src.
+  console.log("✅ Electricity billing system ready. Replace 'myphoto.jpg' inside profile-pic img with your actual photo!");
+  
+  // initialize demo data, preview and storage
+  function init() {
+    loadHistoryFromStorage();
+    // set default preview consumer & units
+    consumerInput.value = "USER-001";
+    unitsInput.value = 320;
+    tariffSelect.value = "domestic";
+    updateBillPreview();
+    bindEvents();
+  }
+  
+  init();
+</script>
+
+<!-- Additional instructions for attaching your photo: 
+     The image inside .profile-pic img currently uses a placeholder avatar.
+     TO ATTACH YOUR PHOTO: change the src attribute of that img tag to your image file (e.g., 'my_photo.jpg' or any URL). 
+     For best results, place the image in same folder as HTML and update src="my_photo.jpg". 
+     The image appears immediately when website opens in the top-right profile section.
+-->
+
+</body>
+</html>
